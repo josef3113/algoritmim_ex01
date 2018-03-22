@@ -14,6 +14,7 @@ struct Node
 	stack<int> MyStack;
 }node;
 
+
 //struct ArrOfNodes
 //{
 //	Node * arr;
