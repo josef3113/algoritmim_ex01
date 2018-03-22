@@ -7,6 +7,48 @@ Node MaxFromStructsArray(Node* StructArray, int low, int high, int size);
 void ArrayOfStructsInput();
 
 
+
+
+Node RecursivTwoMax(Node* i_arr, int i_size)
+{
+	int sizeRight;
+	if (i_size < 2)
+	{
+		return i_arr[0];
+	}
+
+	else
+	{
+				if (i_size % 2 != 0)       // check size odd 
+				{
+					sizeRight = (i_size / 2) + 1;
+				}
+				else
+				{
+					sizeRight = i_size / 2;
+				}
+
+		Node team1 = RecursivTwoMax((i_arr + i_size / 2), sizeRight);
+		Node team2 = RecursivTwoMax(i_arr, i_size / 2);
+
+		if (team1.data > team2.data)
+		{
+			team1.MyStack.push(team2.data);
+			return team1;
+		}
+		else
+		{
+			team2.MyStack.push(team1.data);
+			return team2;
+
+		}
+
+
+	}
+
+}
+
+
 void main()
 {
 	srand(time(NULL));
@@ -129,6 +171,27 @@ void ListOfStructsInput()
 
 }
 
+Node* CreatAndFillArryRandom(int & i_size)
+{
+	cout << "Enter size of Arry: ";
+	cin >> i_size;
+	Node *ArrOfNodes = new Node[i_size];
+	for (int i = 0; i < i_size; i++)
+	{
+		ArrOfNodes[i].data = rand() % 100 + 1;
+	}
+    
+	return ArrOfNodes;
+}
+
+void PrintArryOfNodes(Node* i_ArrToPrint, int i_size)
+{
+	for (int i = 0; i < i_size; i++)
+	{
+		cout << i_ArrToPrint[i].data << endl;
+	}
+}
+
 void ArrayOfStructsInput()
 {
 	int size, max1 = 0, max2 = 0;
@@ -145,7 +208,7 @@ void ArrayOfStructsInput()
 		cout << Arr[i].data << endl;
 	}
 
-	Node max_node = MaxFromStructsArray(Arr, 0, size - 1, size);
+	Node max_node = RecursivTwoMax(Arr, size);
 
 	max1 = max_node.data;
 
