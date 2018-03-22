@@ -5,48 +5,12 @@ void ListOfStructsInput();
 
 Node MaxFromStructsArray(Node* StructArray, int low, int high, int size);
 void ArrayOfStructsInput();
+Node RecursivTwoMax(Node* i_arr, int i_size);
 
 
 
 
-Node RecursivTwoMax(Node* i_arr, int i_size)
-{
-	int sizeRight;
-	if (i_size < 2)
-	{
-		return i_arr[0];
-	}
 
-	else
-	{
-				if (i_size % 2 != 0)       // check size odd 
-				{
-					sizeRight = (i_size / 2) + 1;
-				}
-				else
-				{
-					sizeRight = i_size / 2;
-				}
-
-		Node team1 = RecursivTwoMax((i_arr + i_size / 2), sizeRight);
-		Node team2 = RecursivTwoMax(i_arr, i_size / 2);
-
-		if (team1.data > team2.data)
-		{
-			team1.MyStack.push(team2.data);
-			return team1;
-		}
-		else
-		{
-			team2.MyStack.push(team1.data);
-			return team2;
-
-		}
-
-
-	}
-
-}
 
 
 void main()
@@ -171,7 +135,11 @@ void ListOfStructsInput()
 
 }
 
-Node* CreatAndFillArryRandom(int & i_size)
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+Node* CreatAndFillArryRandom(int& i_size)
 {
 	cout << "Enter size of Arry: ";
 	cin >> i_size;
@@ -192,35 +160,80 @@ void PrintArryOfNodes(Node* i_ArrToPrint, int i_size)
 	}
 }
 
-void ArrayOfStructsInput()
+Node RecursivTwoMax(Node* i_arr, int i_size)
 {
-	int size, max1 = 0, max2 = 0;
-
-	cout << "Enter size: "; cin >> size;
-	Node *Arr = new Node[size];
-	for (int i = 0; i < size; i++)
+	int sizeRight;
+	if (i_size < 2)
 	{
-		Arr[i].data = rand() % 100 + 1;
+		return i_arr[0];
 	}
 
-	for (int i = 0; i < size; i++)
+	else
 	{
-		cout << Arr[i].data << endl;
+		if (i_size % 2 != 0)       // check size odd 
+		{
+			sizeRight = (i_size / 2) + 1;
+		}
+		else
+		{
+			sizeRight = i_size / 2;
+		}
+
+		Node teamLeft = RecursivTwoMax((i_arr + i_size / 2), sizeRight);
+		Node teamRight = RecursivTwoMax(i_arr, i_size / 2);
+
+		if (teamLeft.data > teamRight.data)
+		{
+			teamLeft.MyStack.push(teamRight.data);
+			return teamLeft;
+		}
+		else
+		{
+			teamRight.MyStack.push(teamLeft.data);
+			return teamRight;
+
+		}
+
+
 	}
 
-	Node max_node = RecursivTwoMax(Arr, size);
+}
 
-	max1 = max_node.data;
+void PrintTwoMax(Node i_ToPrint)
+{
+	int max1 = i_ToPrint.data;
+	int max2 = i_ToPrint.MyStack.top();
+	i_ToPrint.MyStack.pop();
 
-	while (!max_node.MyStack.empty())
+	while (!i_ToPrint.MyStack.empty())
 	{
-		if (max2 <= max_node.MyStack.top())
-			max2 = max_node.MyStack.top();
-		max_node.MyStack.pop();
+		if (max2 <= i_ToPrint.MyStack.top())
+		{
+			max2 = i_ToPrint.MyStack.top();
+		}
+
+		i_ToPrint.MyStack.pop();
 	}
 	cout << "Max1 is: " << max1 << endl << "Max2 is: " << max2 << endl;
+
+}
+
+void ArrayOfStructsInput()   //arry of struct!!!
+{
+	int size;
+	Node *Arr = CreatAndFillArryRandom(size);
+	PrintArryOfNodes(Arr, size);
+	Node max_node = RecursivTwoMax(Arr, size);
+	PrintTwoMax(max_node);
+
 	main();
 }
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 Node MaxFromStructsArray(Node *StructArray, int low, int high, int size)
 {

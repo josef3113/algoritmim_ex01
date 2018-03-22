@@ -14,4 +14,9 @@ struct Node
 	stack<int> MyStack;
 }node;
 
+//struct ArrOfNodes
+//{
+//	Node * arr;
+//	array<int,10>
+//};
 #endif
